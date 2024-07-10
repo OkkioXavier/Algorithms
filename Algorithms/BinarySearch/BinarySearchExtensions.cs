@@ -18,33 +18,31 @@ public static class BinarySearchExtensions
         {
             return -1;
         }
+
+        var left = 0;
+        var right = count -1;
+
+        while (left <= right)
+        {
+            var middle = (left + right) / 2;
+            var difference = sortedItems.ElementAt(middle).CompareTo(target);
+
+            if (difference == 0)
+            {
+                return middle;
+            }
+            else if (difference > 0)
+            {
+                right = isDescending ? right : middle - 1;
+                left = isDescending ? middle + 1 : left;
+            }
+            else
+            {
+                left = isDescending ? left : middle + 1;
+                right = isDescending ? middle - 1 : right;
+            }
+        }
         
-        return sortedItems.BinarySearch(target, 0, count - 1, isDescending);
-    }
-
-    static int BinarySearch<T>(this IOrderedEnumerable<T> items, T target, int start, int end, bool isDescending) where T : IComparable
-    { 
-        var middle = (start + end) / 2;
-        var difference = items.ElementAt(middle).CompareTo(target);
-
-        if (difference == 0)
-        {
-            return middle;
-        }
-        else if (start == end)
-        {
-            return -1;
-        }
-
-        if (difference > 0)
-        {
-            return isDescending 
-                ? items.BinarySearch(target, middle + 1, end, isDescending)  // Search Right
-                : items.BinarySearch(target, start, middle - 1, isDescending); // Search Left
-        }
-
-        return isDescending 
-            ? items.BinarySearch(target, start, middle - 1, isDescending) // Search Left
-            : items.BinarySearch(target, middle + 1, end, isDescending); // Search Right
+        return -1;
     }
 }
