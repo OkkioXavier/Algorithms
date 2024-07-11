@@ -1,7 +1,7 @@
-using Algorithms.BinarySearch;
+using Algorithms.Searching;
 using FluentAssertions;
 
-namespace Algorithms.Tests;
+namespace Algorithms.Tests.Searching;
 
 public class BinarySearchTests
 {
