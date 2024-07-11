@@ -1,4 +1,4 @@
-﻿namespace Algorithms.BinarySearch;
+﻿namespace Algorithms.Searching;
 
 public static class BinarySearchExtensions
 {
