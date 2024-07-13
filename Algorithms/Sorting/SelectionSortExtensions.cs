@@ -7,7 +7,7 @@ public static class SelectionSortExtensions
     /// </summary>
     /// <param name="items"></param>
     /// <typeparam name="T"></typeparam>
-    public static void SelectionSort<T>(this List<T> items) where T : IComparable
+    public static void SelectionSort<T>(this IList<T> items) where T : IComparable
     {
         var count = items.Count;
 
@@ -18,7 +18,7 @@ public static class SelectionSortExtensions
 
             for (var index = start; index < count; index++)
             {
-                if (items.ElementAt(index).CompareTo(minValue) < 0)
+                if (items[index].CompareTo(minValue) < 0)
                 {
                     indexOfMin = index;
                     minValue = items[index];
