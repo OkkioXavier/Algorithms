@@ -1,5 +1,6 @@
 using Algorithms.Arithmetic;
 using BenchmarkDotNet.Attributes;
+using Benchmarking.Common;
 using Xunit.Abstractions;
 
 namespace Algorithms.Benchmarks.Arithmetic;

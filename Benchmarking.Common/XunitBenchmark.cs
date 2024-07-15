@@ -1,14 +1,15 @@
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
+using Xunit;
 using Xunit.Abstractions;
 
-namespace Algorithms.Benchmarks;
+namespace Benchmarking.Common;
 
 public abstract class XunitBenchmark<T> : IDisposable
 {
     private readonly ITestOutputHelper _output;
-    protected readonly ManualConfig Config;
+    private readonly ManualConfig _config;
     private readonly AccumulationLogger _logger;
 
     protected XunitBenchmark(ITestOutputHelper output)
@@ -17,7 +18,7 @@ public abstract class XunitBenchmark<T> : IDisposable
         
         _logger = new AccumulationLogger();
 
-        Config = ManualConfig.Create(DefaultConfig.Instance)
+        _config = ManualConfig.Create(DefaultConfig.Instance)
             .AddLogger(_logger)
             .WithOptions(ConfigOptions.DisableOptimizationsValidator);
     }
@@ -26,7 +27,7 @@ public abstract class XunitBenchmark<T> : IDisposable
     [Fact]
     public void Benchmark()
     {
-        BenchmarkRunner.Run<T>(Config);
+        BenchmarkRunner.Run<T>(_config);
     }
 
     public void Dispose()

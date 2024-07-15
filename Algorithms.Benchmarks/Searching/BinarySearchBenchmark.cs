@@ -1,5 +1,6 @@
 using Algorithms.Searching;
 using BenchmarkDotNet.Attributes;
+using Benchmarking.Common;
 using Xunit.Abstractions;
 
 namespace Algorithms.Benchmarks.Searching;

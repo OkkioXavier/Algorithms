@@ -1,5 +1,6 @@
 using Algorithms.Sorting;
 using BenchmarkDotNet.Attributes;
+using Benchmarking.Common;
 using Xunit.Abstractions;
 
 namespace Algorithms.Benchmarks.Sorting;
