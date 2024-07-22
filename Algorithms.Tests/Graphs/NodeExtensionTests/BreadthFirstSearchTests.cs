@@ -1,16 +1,16 @@
 using Algorithms.Graphs;
-using DataStructures;
+using DataStructures.Graphs;
 using FluentAssertions;
 
-namespace Algorithms.Tests.Graphs;
+namespace Algorithms.Tests.Graphs.NodeExtensionTests;
 
-public class NodeExtensionTests
+public class BreadthFirstSearchTests
 {
     [Fact]
     public void BreadthFirstSearchFindsNearestNeighbour()
     {
-        var neighbour1 = new Node<int>(2, [new Node<int>(2, [])]);
-        var node = new Node<int>(1, [neighbour1]);
+        var neighbour1 = new SimpleNode<int>(2, [new SimpleNode<int>(2, [])]);
+        var node = new SimpleNode<int>(1, [neighbour1]);
 
         var result = node.BreadthFirstSearch(2);
 
@@ -20,9 +20,9 @@ public class NodeExtensionTests
     [Fact]
     public void BreadthFirstSearchDoesntFollowCycles()
     {
-        var neighbour1 = new Node<int>(2, []);
-        var node = new Node<int>(1, [neighbour1]);
-        neighbour1.Neighbours.Add(node);
+        var neighbour1 = new SimpleNode<int>(2, []);
+        var node = new SimpleNode<int>(1, [neighbour1]);
+        neighbour1.AddNeighbour(node);
 
         var result = node.BreadthFirstSearch(6);
 
@@ -32,8 +32,8 @@ public class NodeExtensionTests
     [Fact]
     public void BreadthFirstReturnsNullWhenNoNodeExists()
     {
-        var neighbour1 = new Node<int>(2, [new Node<int>(2, [])]);
-        var node = new Node<int>(1, [neighbour1]);
+        var neighbour1 = new SimpleNode<int>(2, [new SimpleNode<int>(2, [])]);
+        var node = new SimpleNode<int>(1, [neighbour1]);
 
         var result = node.BreadthFirstSearch(3);
 
@@ -43,8 +43,8 @@ public class NodeExtensionTests
     [Fact]
     public void BreadthFirstSearchCanFindNodesBelowFirstLevel()
     {
-        var deepNode = new Node<int>(3, []);
-        var node = new Node<int>(1, [new Node<int>(2, [new Node<int>(2, [deepNode])])]);
+        var deepNode = new SimpleNode<int>(3, []);
+        var node = new SimpleNode<int>(1, [new SimpleNode<int>(2, [new SimpleNode<int>(2, [deepNode])])]);
 
         var result = node.BreadthFirstSearch(3);
 
@@ -54,19 +54,19 @@ public class NodeExtensionTests
     [Fact]
     public void FindShortestPathFindsShortestPath()
     {
-        var node4 = new Node<int>(4, []);
-        var node = new Node<int>(1,
+        var node4 = new SimpleNode<int>(4, []);
+        var node = new SimpleNode<int>(1,
             [
-                new Node<int>(2, [node4]),
-                new Node<int>(
+                new SimpleNode<int>(2, [node4]),
+                new SimpleNode<int>(
                     3,
                     [
-                        new Node<int>(5, [node4])
+                        new SimpleNode<int>(5, [node4])
                     ])
             ]);
         var path = node.FindShortestPathTo(4);
 
-        path[0].Should().Be(node);
+        path![0].Should().Be(node);
         path[1].Value.Should().Be(2);
         path[2].Value.Should().Be(4);
     }
@@ -74,14 +74,14 @@ public class NodeExtensionTests
     [Fact]
     public void FindShortestPathReturnsNullIfNoPathExists()
     {
-        var node4 = new Node<int>(4, []);
-        var node = new Node<int>(1,
+        var node4 = new SimpleNode<int>(4, []);
+        var node = new SimpleNode<int>(1,
         [
-            new Node<int>(2, [node4]),
-            new Node<int>(
+            new SimpleNode<int>(2, [node4]),
+            new SimpleNode<int>(
                 3,
                 [
-                    new Node<int>(5, [node4])
+                    new SimpleNode<int>(5, [node4])
                 ])
         ]);
         var path = node.FindShortestPathTo(6);
@@ -92,9 +92,9 @@ public class NodeExtensionTests
     [Fact]
     public void FindShortestPathDoesntFollowCycles()
     {
-        var neighbour1 = new Node<int>(2, []);
-        var node = new Node<int>(1, [neighbour1]);
-        neighbour1.Neighbours.Add(node);
+        var neighbour1 = new SimpleNode<int>(2, []);
+        var node = new SimpleNode<int>(1, [neighbour1]);
+        neighbour1.AddNeighbour(node);
 
         var result = node.FindShortestPathTo(6);
 
