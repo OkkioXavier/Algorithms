@@ -1,0 +1,16 @@
+  on: 
+    push:
+      branches:
+        - master
+    pull_request: null
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: Setup NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: '8.x'
+        - name: Build Release
+          run: dotnet build -c Releases
