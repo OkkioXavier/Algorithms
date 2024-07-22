@@ -13,4 +13,4 @@
           with:
             dotnet-version: '8.x'
         - name: Build Release
-          run: dotnet build -c Releases
+          run: dotnet build -c Release
