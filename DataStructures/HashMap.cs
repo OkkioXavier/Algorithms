@@ -1,6 +1,8 @@
-﻿namespace DataStructures;
+﻿using System.Collections;
 
-public class HashMap<TKey, TValue>
+namespace DataStructures;
+
+public class HashMap<TKey, TValue> : IEnumerable<TValue>
 {
     record KeyValue(TKey Key, TValue Value);
     
@@ -157,5 +159,24 @@ public class HashMap<TKey, TValue>
     {
         ArgumentNullException.ThrowIfNull(key);
         return key.GetHashCode() & (_items.Length - 1);
+    }
+
+    public IEnumerator<TValue> GetEnumerator()
+    {
+        foreach (var bucket in _items)
+        {
+            if (bucket is not null)
+            {
+                foreach (var entry in bucket)
+                {
+                    yield return entry.Value;
+                }
+            }
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this.GetEnumerator();
     }
 }

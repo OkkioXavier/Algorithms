@@ -1,4 +1,6 @@
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Diagnostics.dotTrace;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 using Xunit;
@@ -19,6 +21,8 @@ public abstract class XunitBenchmark<T> : IDisposable
         _logger = new AccumulationLogger();
 
         _config = ManualConfig.Create(DefaultConfig.Instance)
+            .AddDiagnoser(new DotTraceDiagnoser())
+            .AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig()))
             .AddLogger(_logger)
             .WithOptions(ConfigOptions.DisableOptimizationsValidator);
     }
