@@ -12,6 +12,6 @@ public class SelectionSortTests : SortingTest
         var sortedItems = items.Order().ToList();
         items.SelectionSort();
 
-        items.Should().BeEquivalentTo(sortedItems);
+        items.Should().BeEquivalentTo(sortedItems, o => o.WithStrictOrdering());
     }
 }

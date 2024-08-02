@@ -17,6 +17,7 @@ public class QuickSortTests : SortingTest
             .BeEquivalentTo(
                 sortedItems,
                 options => options.Using<IComparable>(c => c.Subject.Should().Be(c.Expectation))
-                    .WhenTypeIs<IComparable>());
+                    .WhenTypeIs<IComparable>()
+                    .WithStrictOrdering());
     }
 }
