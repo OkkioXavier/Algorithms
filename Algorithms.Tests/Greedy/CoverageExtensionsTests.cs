@@ -1,4 +1,3 @@
-using System.Runtime;
 using Algorithms.Greedy;
 using FluentAssertions;
 
@@ -21,7 +20,7 @@ public class CoverageExtensionsTests
 
 
         coveringStations.Should().BeEquivalentTo([stations[2], stations[4]]);
-        coveredRegions.Should().BeEquivalentTo(["A", "B", "C", "E"]);
+        coveredRegions.Should().BeEquivalentTo(["A", "B", "C", "E"], o => o.WithStrictOrdering());
     }
 
     [Fact]
@@ -50,7 +49,7 @@ public class CoverageExtensionsTests
         };
         var (coveringStations, coveredRegions) = stations.FindCoverage("A", "D", "E", "F");
 
-        coveringStations.Should().BeEquivalentTo([stations[2], stations[3], stations[4]]);
-        coveredRegions.Should().BeEquivalentTo(["A", "D", "E"]);
+        coveringStations.Should().BeEquivalentTo([stations[2], stations[3], stations[4]], o => o.WithStrictOrdering());
+        coveredRegions.Should().BeEquivalentTo(["A", "D", "E"], o => o.WithStrictOrdering());
     }
 }
