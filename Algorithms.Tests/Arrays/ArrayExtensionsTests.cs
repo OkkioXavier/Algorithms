@@ -18,19 +18,19 @@ public class ArrayExtensionsTests
     public void ArraysAreRotatedRight()
     {
         int[] items = [1, 2, 3, 4, 5, 6, 7];
-        
+
         items.AsSpan().RotateRight(3);
 
         items.Should().BeEquivalentTo([5, 6, 7, 1, 2, 3, 4], o => o.WithStrictOrdering());
-    } 
-    
+    }
+
     [Fact]
     public void ArraysAreRotatedLeft()
     {
         int[] items = [1, 2, 3, 4, 5, 6, 7];
-        
+
         items.AsSpan().RotateLeft(3);
 
         items.Should().BeEquivalentTo([4, 5, 6, 7, 1, 2, 3], o => o.WithStrictOrdering());
-    } 
+    }
 }
