@@ -77,12 +77,28 @@ public class SquareMatrixTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void MatrixIsRotatedCorrectly(int[,] array, int[,] expectation)
+    public void Rotate90RotatesCorrectly(int[,] array, int[,] expectation)
     {
         var matrix = new SquareMatrix(array);
 
-        matrix.Rotate();
+        var result = matrix.Rotate90();
+        
+        AssertMatrix(result, expectation);
+    }
 
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void Rotate90InPlaceRotatesCorrectly(int[,] array, int[,] expectation)
+    {
+        var matrix = new SquareMatrix(array);
+
+        matrix.Rotate90InPlace();
+
+        AssertMatrix(matrix, expectation);
+    }
+
+    private static void AssertMatrix(SquareMatrix matrix, int[,] expectation)
+    {
         for (var i = 0; i < expectation.GetLength(0); i++)
         {
             for (var j = 0; j < expectation.GetLength(1); j++)
