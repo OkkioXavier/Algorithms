@@ -6,7 +6,7 @@ public class SinglyLinkedList<T>(SinglyLinkedListNode<T> head)
 
     public void Reverse()
     {
-        var current = head;
+        var current = Head;
         var last = default(SinglyLinkedListNode<T>?);
 
         while (current is not null)

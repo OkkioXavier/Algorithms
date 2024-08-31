@@ -17,7 +17,7 @@ public static class ArrayExtensions
     }
 
     public static void ReverseInPlace<T>(this Span<T> span) {
-        for (int i = 0; i < span.Length / 2; i++)
+        for (var i = 0; i < span.Length / 2; i++)
         {
             (span[i], span[^(i + 1)]) = (span[^(i + 1)], span[i]);
         }
