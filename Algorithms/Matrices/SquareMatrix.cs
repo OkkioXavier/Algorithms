@@ -4,6 +4,8 @@ public class SquareMatrix
 {
     private readonly int[,] _matrix;
 
+    private int _sideLength;
+
     public SquareMatrix(int[,] matrix)
     {
         if (matrix.GetLength(0) != matrix.GetLength(1))
@@ -17,6 +19,7 @@ public class SquareMatrix
         }
 
         _matrix = matrix;
+        _sideLength = _matrix.GetLength(0);
     }
 
     // Indexer declaration
@@ -24,14 +27,6 @@ public class SquareMatrix
     {
         get => _matrix[row, column];
         set => _matrix[row, column] = value;
-    }
-
-    enum Direction
-    {
-        Left,
-        Right,
-        Up,
-        Down
     }
 
     // Returns a new matrix rotated by 90 degrees
@@ -51,93 +46,56 @@ public class SquareMatrix
     }
 
     /// <summary>
-    /// Rotates the matrix in place by iteratively rotating each ring formed by the outermost columns and rows
+    /// Rotates the matrix in place by 90 degrees
+    /// This two pointer solution is _very_ fast but hard to remember
+    /// A much easier approach is to transpose the matrix and then reverse it
+    /// <see cref="Algorithms.Tests.Matrices.RotationIsEquivalentToTransposePlusReverse"/>
     /// </summary>
     public void Rotate90InPlace()
     {
-        var offsetVert = 0;
-        var offsetHor = 0;
-
-        while (offsetHor * 2 < _matrix.GetLength(0))
+        for (var i = 0; i < (_sideLength + 1) / 2; i++)
         {
-            var lastElement = _matrix[offsetVert, offsetHor];
-            var column = offsetHor + 1; // Because we set lastElement to the first element above, so we want to place it at the second position
-            var row = offsetVert;
-            var direction = Direction.Right;
-            var rightMost = _matrix.GetLength(0) - offsetHor - 1;
-            var bottomMost = _matrix.GetLength(0) - offsetVert - 1;
-
-            var length = _matrix.GetLength(0) - offsetHor * 2;
-            var elementsInMatrix = length * length;
-            var elementsInInnerMatrix = (length - 2) * (length - 2);
-            var elementsAroundEdge = elementsInMatrix - elementsInInnerMatrix;
-            var swapsToMoveEachElementToCorrectPosition = length - 1;
-            var requiredSwaps = swapsToMoveEachElementToCorrectPosition * elementsAroundEdge;
-            
-            var swaps = 0;
-            
-            while (swaps < requiredSwaps)
+            for (var j = 0; j < _sideLength / 2; j++)
             {
-                (lastElement, _matrix[row, column]) = (_matrix[row, column], lastElement);
-
-                switch (direction)
-                {
-                    case Direction.Left:
-                        if (column > offsetHor)
-                        {
-                            column--;
-                        }
-                        else
-                        {
-                            direction = Direction.Up;
-                            row--;
-                        }
-
-                        break;
-                    case Direction.Right:
-                        if (column < rightMost)
-                        {
-                            column++;
-                        }
-                        else
-                        {
-                            direction = Direction.Down;
-                            row++;
-                        }
-
-                        break;
-                    case Direction.Up:
-                        if (row > offsetVert)
-                        {
-                            row--;
-                        }
-                        else
-                        {
-                            direction = Direction.Right;
-                            column++;
-                            lastElement = _matrix[offsetVert, offsetHor];
-                        }
-
-                        break;
-                    case Direction.Down:
-                        if (row < bottomMost)
-                        {
-                            row++;
-                        }
-                        else
-                        {
-                            direction = Direction.Left;
-                            column--;
-                        }
-
-                        break;
-                }
-
-                swaps++;
+                // temp = bottom left
+                var temp = _matrix[_sideLength - 1 - j, i];
+                
+                // bottomLeft = bottomRight
+                _matrix[_sideLength - 1 - j, i] = _matrix[_sideLength - 1 - i, _sideLength - 1 - j];
+                
+                // bottomRight = topRight
+                _matrix[_sideLength - 1 - i, _sideLength - 1 - j] = _matrix[j, _sideLength - 1 - i];
+                
+                // topRight = topLeft
+                _matrix[j, _sideLength - 1 - i] = _matrix[i, j];
+        
+                // topLeft = temp
+                _matrix[i, j] = temp;
             }
+        }
+    }
 
-            offsetHor++;
-            offsetVert++;
+    // Flips elements across the matrix's main diagonal
+    public void TransposeInPlace()
+    {
+        for (var i = 0; i < _sideLength; i++)
+        {
+            for (var j = i; j < _sideLength; j++)
+            {
+                (_matrix[i, j], _matrix[j, i]) = (_matrix[j, i], _matrix[i, j]);
+            }
+        }
+    }
+
+    // Reverses the order of the elements in each row in the match
+    public void ReverseInPlace()
+    {
+        for (var i = 0; i < _sideLength; i++)
+        {
+            for (var j = 0; j < _sideLength / 2; j++)
+            {
+                (_matrix[i, j], _matrix[i, _sideLength - 1 - j]) = (_matrix[i, _sideLength - 1 - j], _matrix[i, j]);
+            }
         }
     }
 }
